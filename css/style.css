@@ -1,0 +1,447 @@
+/* @theme style */
+/* default を継承 */
+@import 'default';
+
+/* Google Fonts - M PLUS 1p */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;300;400;500;700;800;900&display=swap');
+
+/* ===== 共通変数 ===== */
+:root {
+  --qa-cyan   : #00AEEF;
+  --qa-magenta: #EC008C;
+  --qa-yellow : #FFD400;
+}
+
+/* ベースフォント設定 */
+body {
+  font-family: 'M PLUS 1p', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', 'Yu Gothic UI', 'Meiryo UI', sans-serif;
+}
+
+/* -------------------------------------------------- */
+/*  全セクション共通                                  */
+/* -------------------------------------------------- */
+section {
+  position: relative;   /* ::before / ::after の基準に */
+}
+
+/* section 番号を使う Section スライド用 */
+body { counter-reset: section; }
+
+/* -------------------------------------------------- */
+/*  1. 表紙 (class: title)                            */
+/* -------------------------------------------------- */
+section.title {
+  background: var(--qa-cyan);
+  color: #fff;
+  padding: 0 8% 0 32%;          /* 左 32% を白帯に空ける */
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* 白帯 + ロゴ */
+section.title::before{
+  content:'';
+  position:absolute;
+  top:0; left:0;
+  width:28%;
+  height:100%;                 /* これで縦にフル伸長 */
+  background:#fff url('./css/logo.png') no-repeat center 50% / 55%;
+  z-index:1;
+}
+
+/* 見出し */
+section.title h1,
+section.title h2 { color:#fff; }
+
+section.title h1 { font-size: 2.66em; line-height: 1.2; margin: .1em 0; }
+section.title h2 { font-size: 1.4em; font-weight: normal; }
+
+/* -------------------------------------------------- */
+/*  2. 本文 (class: content)                          */
+/* -------------------------------------------------- */
+section.content {
+  background:#fff;
+  color:#000;
+  padding: 80px 64px;
+  padding-top: 180px; /* H1とH2の間隔を縮めるため、220pxから180pxに変更 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 上寄せ */
+  align-items: flex-start; /* 左寄せ */
+}
+
+/* 3 色ストライプ（最前面にしたいので z-index を上げる）*/
+section.content::before {
+  content:'';
+  display: block;
+  position:absolute;
+  left:0; right:0; top:0; height:12px;
+  background: linear-gradient(90deg,
+    var(--qa-cyan)   0 10%,
+    var(--qa-magenta)10% 30%,
+    var(--qa-yellow) 30% 100%);
+  z-index:1;
+}
+
+/* タイトルが2行以上になった場合の調整 */
+section.content h1 {
+  position: absolute;
+  top: 80px;  /* padding-top と同じ値 */
+  left: 64px; /* padding-left と同じ値 */
+  right: 64px; /* padding-right と同じ値 */
+  margin: 0;
+  margin-bottom: .4em;
+  line-height: 1.2; /* 行間を明確に指定 */
+  min-height: 1.2em; /* 最小高さを設定 */
+  word-wrap: break-word; /* 長い単語の改行を許可 */
+  overflow-wrap: break-word; /* より新しいプロパティ */
+}
+
+/* H2の間隔を調整 */
+section.content h2 {
+  margin-top: 0.2em; /* H1とH2の間隔をさらに縮める */
+  margin-bottom: 0.4em;
+}
+
+/* H3の間隔を調整 */
+section.content h3 {
+  margin-top: 0.1em; /* H1とH2の間隔をさらに縮める */
+  margin-bottom: 0.4em;
+}
+
+section.content h1::after {
+  content:'';
+  display:block;
+  height:8px;
+  background:#000;
+  margin-top:.15em;
+  position: relative; /* 相対位置指定に変更 */
+}
+
+/* 右下ロゴ */
+section.content::after{
+  content:url('./css/logo.png');
+  position:absolute;
+  right:16px; bottom:16px;
+}
+
+/* -------------------------------------------------- */
+/*  引用フッター (右下)                                */
+/* -------------------------------------------------- */
+.footer-cite {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;                    /* スライド最下部に固定 */
+  font-size: 11px;              /* 控えめに */
+  line-height: 1.3;
+  color: #6b7280;               /* 目立たないグレー */
+  background: transparent;      /* 枠・背景なし */
+  padding: 4px 128px 6px 64px;  /* 右下ロゴと左余白に配慮 */
+  border: 0;
+  border-radius: 0;
+  z-index: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* タイトル/セクションスライドでは非表示 */
+section.title .footer-cite,
+section.section .footer-cite { display: none; }
+
+section.content > .ca-logo{
+  position:absolute;
+  left:16px; bottom:16px;
+}
+
+/* 強調 */
+.highlight{ color:#c00; text-decoration:underline; }
+
+/* -------------------------------------------------- */
+/*  3. セクション区切り (class: section)              */
+/* -------------------------------------------------- */
+section.section{
+  background:var(--qa-cyan);
+  color:#fff;
+  padding-left:32%;
+  height: 100%;
+  counter-increment:section;
+}
+
+/* 特定の番号クラスが指定されている場合 */
+section.section.num-1::before { content: "1"; }
+section.section.num-2::before { content: "2"; }
+section.section.num-3::before { content: "3"; }
+section.section.num-4::before { content: "4"; }
+section.section.num-5::before { content: "5"; }
+section.section.num-6::before { content: "6"; }
+section.section.num-7::before { content: "7"; }
+section.section.num-8::before { content: "8"; }
+section.section.num-9::before { content: "9"; }
+
+/* 番号クラス共通のスタイル */
+section.section[class*="num-"]::before {
+  position:absolute;
+  top:0; left:0; bottom:0; width:28%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* 横中央 */
+  justify-content: flex-start;
+  padding-top: 10%;          /* マゼンタ帯(0-50%) の中央 */
+  font:700 180px/1.1 'Helvetica',sans-serif;
+  background:
+  url('./css/logo.png')      /* 画像レイヤー */
+  no-repeat center 75% / 65%,    /* 中央 70% の高さで幅 55% */
+  linear-gradient(
+    var(--qa-magenta)0 50%,
+    #fff            50% 90%,
+    var(--qa-yellow)90% 100%);
+}
+
+
+/* ロゴ（白帯中央）*/
+section.section::after{
+  content:url('./css/logo.png');
+  position:absolute;
+  left:16%; top:50%; transform:translateY(-50%);
+}
+
+/* セクション見出し */
+section.section h1{ font-size:2.4em; color:#fff; }
+
+/* -------------------------------------------------- */
+/*  プロンプト例スタイル (ChatGPT風)                  */
+/* -------------------------------------------------- */
+.prompt-example {
+  background: #f7f7f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 24px 32px;
+  margin: 30px 0;
+  width: 90%;
+  max-width: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #374151;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.prompt-example::before {
+  content: "💬";
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  font-size: 24px;
+}
+
+.prompt-example .prompt-text {
+  margin-left: 50px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* プロンプト例のタイトル */
+.prompt-title {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+  font-size: 16px;
+  margin-left: 50px;
+}
+
+/* 複数行のプロンプト用 */
+.prompt-example.multiline {
+  background: linear-gradient(135deg, #f7f7f8 0%, #f1f5f9 100%);
+}
+
+.prompt-example.multiline .prompt-text {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+  font-size: 16px;
+}
+
+/* ホバー効果 */
+.prompt-example:hover {
+  background: #f1f5f9;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* -------------------------------------------------- */
+/*  強調表示ボックス (#ff8013の四角形で囲み)          */
+/* -------------------------------------------------- */
+.highlight-box {
+  display: inline-block;
+  background-color: transparent;
+  color: var(--qa-cyan);
+  padding: 8px 16px;
+  border: 3px solid var(--qa-cyan);
+  border-radius: 16px;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px auto;
+  box-shadow: 0 2px 4px rgba(255, 128, 19, 0.3);
+}
+
+/* qa-cyan色の四角囲みボックス */
+.qa-cyan-box {
+  display: block;
+  background-color: transparent;
+  color: inherit;
+  padding: 0px 5px;
+  border: 5px solid var(--qa-cyan);
+  border-radius: 12px;
+  margin: 15px 0;
+  box-shadow: 0 2px 6px rgba(0, 174, 239, 0.2);
+}
+
+/* qa-magenta色の四角囲みボックス */
+.qa-magenta-box {
+  display: block;
+  background-color: transparent;
+  color: inherit;
+  padding: 0px 5px;
+  border: 5px solid var(--qa-magenta);
+  border-radius: 12px;
+  margin: 15px 0;
+  box-shadow: 0 2px 6px rgba(236, 0, 140, 0.2);
+}
+
+
+/* -------------------------------------------------- */
+/*  背景画像のカスタマイズ                            */
+/* -------------------------------------------------- */
+/* bg-rightの画像サイズを調整 */
+section[data-marpit-advanced-background*="right"] .marpit-advanced-background-container {
+  background-size: 40% !important; /* サイズを40%に縮小 */
+}
+
+/* 特定のスライドの背景画像のみ調整したい場合 */
+section:nth-of-type(13) [data-marpit-advanced-background*="right"] .marpit-advanced-background-container {
+  background-size: 30% !important;
+  background-position: right center !important;
+}
+
+/* -------------------------------------------------- */
+/*  画像を横並びにするクラス                          */
+/* -------------------------------------------------- */
+.flex-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.flex-images img {
+  width: 45% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  max-width: 45% !important;
+}
+
+/* -------------------------------------------------- */
+/*  インライン画像を中央寄せにするコンテナ              */
+/* -------------------------------------------------- */
+.img-center {
+  width: 100%;
+  text-align: center;
+}
+
+.img-center > img,
+.img-center > p > img {
+  display: inline-block;
+  height: auto;
+}
+
+
+/* ---- 基本レイアウト ---- */
+ pre  {           /* highlight.js v11 のスコープ仕様に合わせる */
+  display:block !important;
+  padding:0.3em 2em;
+  background:#2B2B2B;
+  color:#A9B7C6;
+  font-size:0.9em !important;
+  border-radius:6px;
+  line-height:0.95;
+  width: auto;
+  max-width: 95%;
+  min-width: 80%;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+
+/* ---- Darcula 配色 ---- */
+.hljs-comment,
+.hljs-quote        { color:#808080; font-style:italic; }   /* コメント */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-doctag,
+.hljs-meta .hljs-keyword,
+.hljs-name         { color:#CC7832; }                     /* キーワード */
+.hljs-string,
+.hljs-title,
+.hljs-meta .hljs-string,
+.hljs-addition     { color:#6A8759; }                     /* 文字列・タイトル */
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet       { color:#769AA5; }                     /* 数値・定数 */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr,
+.hljs-attribute    { color:#9876AA; }                     /* 変数・属性 */
+.hljs-type,
+.hljs-built_in     { color:#A9B7C6; }                     /* 型・組込 */
+.hljs-section,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-title.class_,
+.hljs-title.class__.hljs-type { color:#FFC66D; }          /* セクション等 */
+
+.hljs-emphasis { font-style:italic; }
+.hljs-strong   { font-weight:bold; }
+
+/* ---- オプション：ハイコントラスト時に自動反転したい場合 ---- */
+@media (prefers-color-scheme: light) {
+  section { background:#FFFFFF; color:#3C3F41; }           /* Darcula → Light */
+  code.hljs, pre code.hljs { background:#F7F7F7; color:#3C3F41; }
+}
+
+:root {
+  --fw: 1;
+}
+
+/* ----- レイアウト ----- */
+.flex{
+  display: flex;
+  gap: 1em;
+}
+.sa {
+  justify-content: space-around;
+  /* border: 8px dashed rgb(15, 166, 226);
+  background-color: rgb(222, 244, 255); */
+}
+.sb {
+  justify-content: space-between;
+  /* border: 8px dashed rgb(21, 17, 255);
+  background-color: rgb(222, 244, 255); */
+}
+.sa div,.sb div{
+  margin: 0.1em;
+  /* border: 8px dashed rgb(80, 177, 109);
+  background-color: rgb(227, 250, 237); */
+}
+.fw div{
+  flex: var(--fw);
+  /* background-color: rgb(244, 238, 255);
+  border: 8px dashed rgb(93, 0, 255); */
+}/* ---------- */
